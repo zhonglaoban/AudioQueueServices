@@ -1,0 +1,374 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		455D0520238C1A2700F6F74D /* ZFAudioFileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 455D051F238C1A2600F6F74D /* ZFAudioFileManager.m */; };
+		456E42FC238517B2004F5D1B /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 456E42FB238517B2004F5D1B /* AppDelegate.m */; };
+		456E4302238517B2004F5D1B /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 456E4301238517B2004F5D1B /* ViewController.m */; };
+		456E4305238517B2004F5D1B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 456E4303238517B2004F5D1B /* Main.storyboard */; };
+		456E4307238517B3004F5D1B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 456E4306238517B3004F5D1B /* Assets.xcassets */; };
+		456E430A238517B3004F5D1B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 456E4308238517B3004F5D1B /* LaunchScreen.storyboard */; };
+		456E430D238517B3004F5D1B /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 456E430C238517B3004F5D1B /* main.m */; };
+		456E4316238519AF004F5D1B /* ZFAudioQueuePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 456E4315238519AF004F5D1B /* ZFAudioQueuePlayer.m */; };
+		456E4319238519C0004F5D1B /* ZFAudioQueueRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = 456E4318238519C0004F5D1B /* ZFAudioQueueRecorder.m */; };
+		456E431D23862C32004F5D1B /* ZFAudioSession.m in Sources */ = {isa = PBXBuildFile; fileRef = 456E431C23862C32004F5D1B /* ZFAudioSession.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		455D051E238C1A2600F6F74D /* ZFAudioFileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ZFAudioFileManager.h; sourceTree = "<group>"; };
+		455D051F238C1A2600F6F74D /* ZFAudioFileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ZFAudioFileManager.m; sourceTree = "<group>"; };
+		456E42F7238517B2004F5D1B /* AudioQueueServices.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AudioQueueServices.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		456E42FA238517B2004F5D1B /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		456E42FB238517B2004F5D1B /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		456E4300238517B2004F5D1B /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		456E4301238517B2004F5D1B /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		456E4304238517B2004F5D1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		456E4306238517B3004F5D1B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		456E4309238517B3004F5D1B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		456E430B238517B3004F5D1B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		456E430C238517B3004F5D1B /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		456E4314238519AF004F5D1B /* ZFAudioQueuePlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFAudioQueuePlayer.h; sourceTree = "<group>"; };
+		456E4315238519AF004F5D1B /* ZFAudioQueuePlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFAudioQueuePlayer.m; sourceTree = "<group>"; };
+		456E4317238519C0004F5D1B /* ZFAudioQueueRecorder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFAudioQueueRecorder.h; sourceTree = "<group>"; };
+		456E4318238519C0004F5D1B /* ZFAudioQueueRecorder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFAudioQueueRecorder.m; sourceTree = "<group>"; };
+		456E431B23862C32004F5D1B /* ZFAudioSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ZFAudioSession.h; sourceTree = "<group>"; };
+		456E431C23862C32004F5D1B /* ZFAudioSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ZFAudioSession.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		456E42F4238517B2004F5D1B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		456E42EE238517B2004F5D1B = {
+			isa = PBXGroup;
+			children = (
+				456E42F9238517B2004F5D1B /* AudioQueueServices */,
+				456E42F8238517B2004F5D1B /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		456E42F8238517B2004F5D1B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				456E42F7238517B2004F5D1B /* AudioQueueServices.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		456E42F9238517B2004F5D1B /* AudioQueueServices */ = {
+			isa = PBXGroup;
+			children = (
+				455D051E238C1A2600F6F74D /* ZFAudioFileManager.h */,
+				455D051F238C1A2600F6F74D /* ZFAudioFileManager.m */,
+				456E431323851999004F5D1B /* AudioQueue */,
+				456E42FA238517B2004F5D1B /* AppDelegate.h */,
+				456E42FB238517B2004F5D1B /* AppDelegate.m */,
+				456E4300238517B2004F5D1B /* ViewController.h */,
+				456E4301238517B2004F5D1B /* ViewController.m */,
+				456E4303238517B2004F5D1B /* Main.storyboard */,
+				456E4306238517B3004F5D1B /* Assets.xcassets */,
+				456E4308238517B3004F5D1B /* LaunchScreen.storyboard */,
+				456E430B238517B3004F5D1B /* Info.plist */,
+				456E430C238517B3004F5D1B /* main.m */,
+			);
+			path = AudioQueueServices;
+			sourceTree = "<group>";
+		};
+		456E431323851999004F5D1B /* AudioQueue */ = {
+			isa = PBXGroup;
+			children = (
+				456E4314238519AF004F5D1B /* ZFAudioQueuePlayer.h */,
+				456E4315238519AF004F5D1B /* ZFAudioQueuePlayer.m */,
+				456E4317238519C0004F5D1B /* ZFAudioQueueRecorder.h */,
+				456E4318238519C0004F5D1B /* ZFAudioQueueRecorder.m */,
+				456E431B23862C32004F5D1B /* ZFAudioSession.h */,
+				456E431C23862C32004F5D1B /* ZFAudioSession.m */,
+			);
+			path = AudioQueue;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		456E42F6238517B2004F5D1B /* AudioQueueServices */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 456E4310238517B3004F5D1B /* Build configuration list for PBXNativeTarget "AudioQueueServices" */;
+			buildPhases = (
+				456E42F3238517B2004F5D1B /* Sources */,
+				456E42F4238517B2004F5D1B /* Frameworks */,
+				456E42F5238517B2004F5D1B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AudioQueueServices;
+			productName = AudioQueuePlayer;
+			productReference = 456E42F7238517B2004F5D1B /* AudioQueueServices.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		456E42EF238517B2004F5D1B /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1110;
+				ORGANIZATIONNAME = "钟凡";
+				TargetAttributes = {
+					456E42F6238517B2004F5D1B = {
+						CreatedOnToolsVersion = 11.1;
+					};
+				};
+			};
+			buildConfigurationList = 456E42F2238517B2004F5D1B /* Build configuration list for PBXProject "AudioQueueServices" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 456E42EE238517B2004F5D1B;
+			productRefGroup = 456E42F8238517B2004F5D1B /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				456E42F6238517B2004F5D1B /* AudioQueueServices */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		456E42F5238517B2004F5D1B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				456E430A238517B3004F5D1B /* LaunchScreen.storyboard in Resources */,
+				456E4307238517B3004F5D1B /* Assets.xcassets in Resources */,
+				456E4305238517B2004F5D1B /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		456E42F3238517B2004F5D1B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				456E4302238517B2004F5D1B /* ViewController.m in Sources */,
+				456E431D23862C32004F5D1B /* ZFAudioSession.m in Sources */,
+				456E42FC238517B2004F5D1B /* AppDelegate.m in Sources */,
+				455D0520238C1A2700F6F74D /* ZFAudioFileManager.m in Sources */,
+				456E430D238517B3004F5D1B /* main.m in Sources */,
+				456E4316238519AF004F5D1B /* ZFAudioQueuePlayer.m in Sources */,
+				456E4319238519C0004F5D1B /* ZFAudioQueueRecorder.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		456E4303238517B2004F5D1B /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				456E4304238517B2004F5D1B /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		456E4308238517B3004F5D1B /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				456E4309238517B3004F5D1B /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		456E430E238517B3004F5D1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		456E430F238517B3004F5D1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		456E4311238517B3004F5D1B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VB8MVMJBU4;
+				INFOPLIST_FILE = "$(SRCROOT)/AudioQueueServices/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = zf.AudioQueuePlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		456E4312238517B3004F5D1B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = VB8MVMJBU4;
+				INFOPLIST_FILE = "$(SRCROOT)/AudioQueueServices/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = zf.AudioQueuePlayer;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		456E42F2238517B2004F5D1B /* Build configuration list for PBXProject "AudioQueueServices" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				456E430E238517B3004F5D1B /* Debug */,
+				456E430F238517B3004F5D1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		456E4310238517B3004F5D1B /* Build configuration list for PBXNativeTarget "AudioQueueServices" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				456E4311238517B3004F5D1B /* Debug */,
+				456E4312238517B3004F5D1B /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 456E42EF238517B2004F5D1B /* Project object */;
+}
