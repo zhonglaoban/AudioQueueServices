@@ -9,17 +9,19 @@
 #import "ZFAudioQueuePlayer.h"
 #import <AVFoundation/AVFoundation.h>
 
-static const int kNumberBuffers = 3;
-static const double kSampleTime = 0.02;//s
-static const int kSampleRate = 44100;
+static const int kNumberBuffers = 6;
 
 @interface ZFAudioQueuePlayer()
 
 @property (nonatomic) dispatch_queue_t queue;
 @property (nonatomic) AudioStreamBasicDescription asbd;
 @property (nonatomic) AudioQueueRef audioQueue;
-@property (nonatomic) BOOL isRunning;
-@property (nonatomic) UInt32 bufferSize;
+@property (nonatomic, assign) BOOL isRunning;
+@property (nonatomic, assign) UInt32 bufferSize;
+@property (nonatomic, assign) double sampleTime;
+@property (nonatomic, assign) double sampleRate;
+@property (nonatomic, assign) UInt32 fillIndex;
+@property (nonatomic, assign) UInt32 playIndex;
 
 @end
 
@@ -30,7 +32,10 @@ static const int kSampleRate = 44100;
 }
 - (instancetype)init {
     if (self = [super init]) {
+        _playIndex = 0;
+        _fillIndex = 0;
         _queue = dispatch_queue_create("zf.audioPlayer", DISPATCH_QUEUE_SERIAL);
+        [self setupAudioSession];
         [self setupAudioFormat];
         dispatch_async(_queue, ^{
             [self setupAudioQueue];
@@ -42,7 +47,7 @@ static const int kSampleRate = 44100;
 - (void)setupAudioFormat {
     UInt32 mChannelsPerFrame = 1;
     _asbd.mFormatID = kAudioFormatLinearPCM;
-    _asbd.mSampleRate = kSampleRate;
+    _asbd.mSampleRate = _sampleRate;
     _asbd.mChannelsPerFrame = mChannelsPerFrame;
     //pcm数据范围(−2^16 + 1) ～ (2^16 - 1)
     _asbd.mBitsPerChannel = 16;
@@ -51,7 +56,7 @@ static const int kSampleRate = 44100;
     //下面设置的是1 frame per packet, 所以 frame = packet
     _asbd.mBytesPerFrame = mChannelsPerFrame * 2;
     _asbd.mFramesPerPacket = 1;
-    _asbd.mFormatFlags = kLinearPCMFormatFlagIsBigEndian | kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+    _asbd.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
 }
 - (void)setupAudioQueue {
     void *handle = (__bridge void *)self;
@@ -59,12 +64,13 @@ static const int kSampleRate = 44100;
     printf("AudioQueueNewOutput: %d \n", (int)status);
 }
 - (void)setupAudioQueueBuffers {
-    _bufferSize = kSampleRate * kSampleTime * _asbd.mBytesPerPacket;
+    _bufferSize = _sampleRate * _sampleTime * _asbd.mBytesPerPacket;
     for (int i = 0; i < kNumberBuffers; ++i) {
         AudioQueueBufferRef buffer;
         OSStatus status = AudioQueueAllocateBuffer(_audioQueue, _bufferSize, &buffer);
         printf("player alloc buffer: %d \n", (int)status);
         buffer->mUserData = (void *)NO;
+        buffer->mAudioDataByteSize = _bufferSize;
         mBuffers[i] = buffer;
     }
 }
@@ -74,17 +80,16 @@ static const int kSampleRate = 44100;
     NSError *sessionError;
     BOOL result;
     
-    result = [audioSession setPreferredIOBufferDuration:kSampleTime error:&sessionError];
+    result = [audioSession setPreferredIOBufferDuration:_sampleTime error:&sessionError];
     printf("setPreferredIOBufferDuration %d \n", result);
     
-    result = [audioSession setPreferredSampleRate:kSampleRate error:&sessionError];
-
-    // Activate the audio session
-    result = [audioSession setActive:YES error:&sessionError];
-    printf("setActive %d \n", result);
+    result = [audioSession setPreferredSampleRate:_sampleRate error:&sessionError];
+    printf("setPreferredSampleRate %d \n", result);
+    
+    _sampleTime = audioSession.IOBufferDuration;
+    _sampleRate = audioSession.sampleRate;
 }
 - (void)startPlay {
-//    [self setupAudioSession];
     dispatch_async(_queue, ^{
         //start audio queue
         OSStatus status = AudioQueueStart(self.audioQueue, NULL);
@@ -98,25 +103,26 @@ static const int kSampleRate = 44100;
     if (!_isRunning) {
         return;
     }
-    AudioQueueBufferRef freeBuffer = NULL;
     
-    for (int i = 0; i < kNumberBuffers; i++) {
-        AudioQueueBufferRef buffer = mBuffers[i];
-        BOOL used = (BOOL)buffer->mUserData;
-        if (!used) {
-            freeBuffer = buffer;
-            break;
-        }
+    if (_fillIndex >= kNumberBuffers) {
+        _fillIndex = 0;
     }
-    if (freeBuffer) {
-        memcpy(freeBuffer->mAudioData, data, length);
-        freeBuffer->mAudioDataByteSize = length;
-        OSStatus status = AudioQueueEnqueueBuffer(_audioQueue, freeBuffer, 0, NULL);
-        printf("player enqueue buffer: %d \n", (int)status);
-        freeBuffer->mUserData = (void *)YES;
-    }else {
-        printf("no buffer to use \n");
+    AudioQueueBufferRef fillBuffer = mBuffers[_fillIndex];
+    BOOL bufferFiled = (BOOL)fillBuffer->mUserData;
+    if (bufferFiled) {
+        printf("no buffer to fill \n");
+        return;
     }
+    memcpy(fillBuffer->mAudioData, data, length);
+    fillBuffer->mAudioDataByteSize = length;
+    fillBuffer->mUserData = (void *)YES;
+    
+    OSStatus status = AudioQueueEnqueueBuffer(_audioQueue, fillBuffer, 0, NULL);
+    if (status != noErr) {
+        printf("play enqueue buffer: %d \n", (int)status);
+    }
+    
+    _fillIndex ++;
 }
 - (void)stopPlay {
     dispatch_async(_queue, ^{
@@ -135,6 +141,7 @@ static void outputCallback(void *outUserData,
     if (!player.isRunning) {
         return;
     }
+    
     outBuffer->mUserData = (void *)NO;
 }
 @end

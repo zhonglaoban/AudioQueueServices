@@ -9,9 +9,7 @@
 #import "ZFAudioQueueRecorder.h"
 #import <AVFoundation/AVFoundation.h>
 
-static const int kNumberBuffers = 3;
-static const double kSampleTime = 0.02;//s
-static const int kSampleRate = 44100;
+static const int kNumberBuffers = 4;
 
 @interface ZFAudioQueueRecorder()
 
@@ -20,6 +18,8 @@ static const int kSampleRate = 44100;
 @property (nonatomic) AudioQueueRef audioQueue;
 @property (nonatomic) BOOL isRunning;
 @property (nonatomic) UInt32 bufferSize;
+@property (nonatomic, assign) double sampleTime;
+@property (nonatomic, assign) double sampleRate;
 
 @end
 
@@ -29,6 +29,7 @@ static const int kSampleRate = 44100;
 - (instancetype)init {
     if (self = [super init]) {
         _queue = dispatch_queue_create("zf.audioRecorder", DISPATCH_QUEUE_SERIAL);
+        [self setupAudioSession];
         [self setupAudioFormat];
         dispatch_async(_queue, ^{
             [self setupAudioQueue];
@@ -40,7 +41,7 @@ static const int kSampleRate = 44100;
 - (void)setupAudioFormat {
     UInt32 mChannelsPerFrame = 1;
     _asbd.mFormatID = kAudioFormatLinearPCM;
-    _asbd.mSampleRate = kSampleRate;
+    _asbd.mSampleRate = _sampleRate;
     _asbd.mChannelsPerFrame = mChannelsPerFrame;
     //pcm数据范围(−2^16 + 1) ～ (2^16 - 1)
     _asbd.mBitsPerChannel = 16;
@@ -49,7 +50,7 @@ static const int kSampleRate = 44100;
     //下面设置的是1 frame per packet, 所以 frame = packet
     _asbd.mBytesPerFrame = mChannelsPerFrame * 2;
     _asbd.mFramesPerPacket = 1;
-    _asbd.mFormatFlags = kLinearPCMFormatFlagIsBigEndian | kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
+    _asbd.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger | kLinearPCMFormatFlagIsPacked;
 }
 - (void)setupAudioQueue {
     void *handle = (__bridge void *)self;
@@ -57,7 +58,7 @@ static const int kSampleRate = 44100;
     printf("AudioQueueNewInput: %d \n", (int)status);
 }
 - (void)setupAudioQueueBuffers {
-    _bufferSize = kSampleRate * kSampleTime * _asbd.mBytesPerPacket;
+    _bufferSize = _sampleRate * _sampleTime * _asbd.mBytesPerPacket;
     for (int i = 0; i < kNumberBuffers; ++i) {
         AudioQueueBufferRef buffer;
         OSStatus status = AudioQueueAllocateBuffer(_audioQueue, _bufferSize, &buffer);
@@ -73,14 +74,14 @@ static const int kSampleRate = 44100;
     NSError *sessionError;
     BOOL result;
     
-    result = [audioSession setPreferredIOBufferDuration:kSampleTime error:&sessionError];
+    result = [audioSession setPreferredIOBufferDuration:_sampleTime error:&sessionError];
     printf("setPreferredIOBufferDuration %d \n", result);
     
-    result = [audioSession setPreferredSampleRate:kSampleRate error:&sessionError];
-
-    // Activate the audio session
-    result = [audioSession setActive:YES error:&sessionError];
-    printf("setActive %d \n", result);
+    result = [audioSession setPreferredSampleRate:_sampleRate error:&sessionError];
+    printf("setPreferredSampleRate %d \n", result);
+    
+    _sampleTime = audioSession.IOBufferDuration;
+    _sampleRate = audioSession.sampleRate;
 }
 - (BOOL)canDeviceOpenMicrophone {
     //判断应用是否有使用麦克风的权限
@@ -121,7 +122,6 @@ static const int kSampleRate = 44100;
 }
 #pragma mark - public
 - (void)startRecord {
-    [self setupAudioSession];
     [self checkAudioAuthorization:^(int code, NSString *message) {
         NSLog(@"checkAudioAuthorization code: %d, message: %@", code, message);
     }];

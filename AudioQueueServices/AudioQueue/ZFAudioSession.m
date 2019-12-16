@@ -17,7 +17,7 @@
     NSError *sessionError;
     BOOL result;
     result = [audioSession setCategory:AVAudioSessionCategoryPlayAndRecord
-                           withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionMixWithOthers | AVAudioSessionCategoryOptionAllowBluetooth
+                           withOptions:AVAudioSessionCategoryOptionDefaultToSpeaker | AVAudioSessionCategoryOptionAllowBluetooth
                                  error:&sessionError];
     
     printf("setCategory %d \n", result);
