@@ -32,7 +32,7 @@ static const int kNumberBuffers = 3;
 - (instancetype)init {
     if (self = [super init]) {
         _queue = dispatch_queue_create("zf.audioPlayer", DISPATCH_QUEUE_SERIAL);
-        [self setupAudioSession];
+        [self getAudioSessionProperty];
         [self setupAudioFormat];
         dispatch_async(_queue, ^{
             [self setupAudioQueue];
@@ -84,16 +84,8 @@ static const int kNumberBuffers = 3;
         printf("AudioQueueEnqueueBuffer: %d \n", (int)status);
     }
 }
-- (void)setupAudioSession {
+- (void)getAudioSessionProperty {
     AVAudioSession *audioSession = [AVAudioSession sharedInstance];
-    
-    NSError *sessionError;
-    BOOL result;
-    
-    result = [audioSession setPreferredIOBufferDuration:_sampleTime error:&sessionError];
-    printf("setPreferredIOBufferDuration %d \n", result);
-    result = [audioSession setPreferredSampleRate:_sampleRate error:&sessionError];
-    printf("setPreferredSampleRate %d \n", result);
     
     _sampleTime = audioSession.IOBufferDuration;
     _sampleRate = audioSession.sampleRate;
