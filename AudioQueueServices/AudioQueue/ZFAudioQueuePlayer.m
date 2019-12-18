@@ -9,7 +9,7 @@
 #import "ZFAudioQueuePlayer.h"
 #import <AVFoundation/AVFoundation.h>
 
-static const int kNumberBuffers = 6;
+static const int kNumberBuffers = 3;
 
 @interface ZFAudioQueuePlayer()
 
@@ -17,11 +17,10 @@ static const int kNumberBuffers = 6;
 @property (nonatomic) AudioStreamBasicDescription asbd;
 @property (nonatomic) AudioQueueRef audioQueue;
 @property (nonatomic, assign) BOOL isRunning;
-@property (nonatomic, assign) UInt32 bufferSize;
+@property (nonatomic, assign) int bufferSize;
 @property (nonatomic, assign) double sampleTime;
 @property (nonatomic, assign) double sampleRate;
-@property (nonatomic, assign) UInt32 fillIndex;
-@property (nonatomic, assign) UInt32 playIndex;
+@property (nonatomic, assign) int playIndex;
 
 @end
 
@@ -32,13 +31,12 @@ static const int kNumberBuffers = 6;
 }
 - (instancetype)init {
     if (self = [super init]) {
-        _playIndex = 0;
-        _fillIndex = 0;
         _queue = dispatch_queue_create("zf.audioPlayer", DISPATCH_QUEUE_SERIAL);
         [self setupAudioSession];
         [self setupAudioFormat];
         dispatch_async(_queue, ^{
             [self setupAudioQueue];
+            [self setVolume:1.0];
             [self setupAudioQueueBuffers];
         });
     }
@@ -63,15 +61,27 @@ static const int kNumberBuffers = 6;
     OSStatus status = AudioQueueNewOutput(&_asbd, outputCallback, handle, NULL, NULL, 0, &_audioQueue);
     printf("AudioQueueNewOutput: %d \n", (int)status);
 }
+- (void)setVolume:(float)volume {
+    OSStatus status = AudioQueueSetParameter(_audioQueue, kAudioQueueParam_Volume, volume);
+    printf("set volume: %d \n", (int)status);
+}
 - (void)setupAudioQueueBuffers {
     _bufferSize = _sampleRate * _sampleTime * _asbd.mBytesPerPacket;
     for (int i = 0; i < kNumberBuffers; ++i) {
         AudioQueueBufferRef buffer;
         OSStatus status = AudioQueueAllocateBuffer(_audioQueue, _bufferSize, &buffer);
-        printf("player alloc buffer: %d \n", (int)status);
+        printf("player alloc buffer: %d, _bufferSize:%u \n", (int)status, (unsigned int)_bufferSize);
         buffer->mUserData = (void *)NO;
         buffer->mAudioDataByteSize = _bufferSize;
         mBuffers[i] = buffer;
+    }
+}
+- (void)enqueueBuffers {
+    for (int i = 0; i < kNumberBuffers; ++i) {
+        AudioQueueBufferRef buffer = mBuffers[i];
+        //需要将创建好的buffer给audio queue
+        OSStatus status = AudioQueueEnqueueBuffer(_audioQueue, buffer, 0, NULL);
+        printf("AudioQueueEnqueueBuffer: %d \n", (int)status);
     }
 }
 - (void)setupAudioSession {
@@ -82,15 +92,18 @@ static const int kNumberBuffers = 6;
     
     result = [audioSession setPreferredIOBufferDuration:_sampleTime error:&sessionError];
     printf("setPreferredIOBufferDuration %d \n", result);
-    
     result = [audioSession setPreferredSampleRate:_sampleRate error:&sessionError];
     printf("setPreferredSampleRate %d \n", result);
     
     _sampleTime = audioSession.IOBufferDuration;
     _sampleRate = audioSession.sampleRate;
+    
+    printf("_sampleTime %f \n", _sampleTime);
+    printf("_sampleTime %f \n", _sampleRate);
 }
 - (void)startPlay {
     dispatch_async(_queue, ^{
+        [self enqueueBuffers];
         //start audio queue
         OSStatus status = AudioQueueStart(self.audioQueue, NULL);
         if (status == noErr) {
@@ -104,25 +117,23 @@ static const int kNumberBuffers = 6;
         return;
     }
     
-    if (_fillIndex >= kNumberBuffers) {
-        _fillIndex = 0;
+    //这里处理的有点粗糙，音频数据可能会乱
+    AudioQueueBufferRef fillBuffer = NULL;
+    for (int i = 0; i < kNumberBuffers; ++i) {
+        AudioQueueBufferRef buffer = mBuffers[i];
+        BOOL bufferFiled = (BOOL)buffer->mUserData;
+        if (!bufferFiled) {
+            fillBuffer = buffer;
+            break;
+        }
     }
-    AudioQueueBufferRef fillBuffer = mBuffers[_fillIndex];
-    BOOL bufferFiled = (BOOL)fillBuffer->mUserData;
-    if (bufferFiled) {
-        printf("no buffer to fill \n");
+    if (fillBuffer == NULL) {
+        printf("没有可用buffer, 执行丢帧 \n");
         return;
     }
     memcpy(fillBuffer->mAudioData, data, length);
     fillBuffer->mAudioDataByteSize = length;
     fillBuffer->mUserData = (void *)YES;
-    
-    OSStatus status = AudioQueueEnqueueBuffer(_audioQueue, fillBuffer, 0, NULL);
-    if (status != noErr) {
-        printf("play enqueue buffer: %d \n", (int)status);
-    }
-    
-    _fillIndex ++;
 }
 - (void)stopPlay {
     dispatch_async(_queue, ^{
@@ -141,7 +152,16 @@ static void outputCallback(void *outUserData,
     if (!player.isRunning) {
         return;
     }
-    
+    if (player.playIndex >= kNumberBuffers) {
+        player.playIndex = 0;
+    }
+    AudioQueueBufferRef filledBuffer = player->mBuffers[player.playIndex];
+    memcpy(outBuffer->mAudioData, filledBuffer->mAudioData, filledBuffer->mAudioDataByteSize);
     outBuffer->mUserData = (void *)NO;
+    OSStatus status = AudioQueueEnqueueBuffer(player.audioQueue, outBuffer, 0, NULL);
+    if (status != noErr) {
+        printf("play enqueue buffer: %d \n", (int)status);
+    }
+    player.playIndex ++;
 }
 @end

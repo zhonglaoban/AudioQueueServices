@@ -28,7 +28,7 @@
         [_audioPlayer startPlay];
     }else {
         [_audioRecorder stopRecord];
-        [_audioPlayer startPlay];
+        [_audioPlayer stopPlay];
         [_audioWriter closeFile];
     }
 }
@@ -65,6 +65,6 @@
 
 - (void)audioRecorder:(ZFAudioQueueRecorder *)audioRecorder didRecoredAudioData:(void *)data length:(UInt32)length {
     [_audioPlayer putAudioData:data length:length];
-    [_audioWriter writeData:data length:length];
+//    [_audioWriter writeData:data length:length];
 }
 @end

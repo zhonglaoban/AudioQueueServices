@@ -9,7 +9,7 @@
 #import "ZFAudioQueueRecorder.h"
 #import <AVFoundation/AVFoundation.h>
 
-static const int kNumberBuffers = 4;
+static const int kNumberBuffers = 3;
 
 @interface ZFAudioQueueRecorder()
 
@@ -25,7 +25,9 @@ static const int kNumberBuffers = 4;
 
 
 @implementation ZFAudioQueueRecorder
-
+{
+    AudioQueueBufferRef mBuffers[kNumberBuffers];
+}
 - (instancetype)init {
     if (self = [super init]) {
         _queue = dispatch_queue_create("zf.audioRecorder", DISPATCH_QUEUE_SERIAL);
@@ -62,9 +64,15 @@ static const int kNumberBuffers = 4;
     for (int i = 0; i < kNumberBuffers; ++i) {
         AudioQueueBufferRef buffer;
         OSStatus status = AudioQueueAllocateBuffer(_audioQueue, _bufferSize, &buffer);
-        printf("AudioQueueAllocateBuffer: %d \n", (int)status);
+        printf("recorder alloc buffer: %d, _bufferSize:%u \n", (int)status, (unsigned int)_bufferSize);
+        mBuffers[i] = buffer;
+    }
+}
+- (void)enqueueBuffers {
+    for (int i = 0; i < kNumberBuffers; ++i) {
+        AudioQueueBufferRef buffer = mBuffers[i];
         //需要将创建好的buffer给audio queue
-        status = AudioQueueEnqueueBuffer(_audioQueue, buffer, 0, NULL);
+        OSStatus status = AudioQueueEnqueueBuffer(_audioQueue, buffer, 0, NULL);
         printf("AudioQueueEnqueueBuffer: %d \n", (int)status);
     }
 }
@@ -82,6 +90,9 @@ static const int kNumberBuffers = 4;
     
     _sampleTime = audioSession.IOBufferDuration;
     _sampleRate = audioSession.sampleRate;
+    
+    printf("_sampleTime %f \n", _sampleTime);
+    printf("_sampleTime %f \n", _sampleRate);
 }
 - (BOOL)canDeviceOpenMicrophone {
     //判断应用是否有使用麦克风的权限
@@ -126,6 +137,7 @@ static const int kNumberBuffers = 4;
         NSLog(@"checkAudioAuthorization code: %d, message: %@", code, message);
     }];
     dispatch_async(_queue, ^{
+        [self enqueueBuffers];
         //start audio queue
         OSStatus status = AudioQueueStart(self.audioQueue, NULL);
         if (status == noErr) {
