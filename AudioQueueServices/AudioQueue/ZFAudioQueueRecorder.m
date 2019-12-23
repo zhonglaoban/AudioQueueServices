@@ -35,7 +35,7 @@ static const int kNumberBuffers = 3;
         [self setupAudioFormat];
         dispatch_async(_queue, ^{
             [self setupAudioQueue];
-            [self setupAudioQueueBuffers];
+            [self allocateBuffers];
         });
     }
     return self;
@@ -59,7 +59,7 @@ static const int kNumberBuffers = 3;
     OSStatus status = AudioQueueNewInput(&_asbd, inputCallback, handle, NULL, NULL, 0, &_audioQueue);
     printf("AudioQueueNewInput: %d \n", (int)status);
 }
-- (void)setupAudioQueueBuffers {
+- (void)allocateBuffers {
     _bufferSize = _sampleRate * _sampleTime * _asbd.mBytesPerPacket;
     for (int i = 0; i < kNumberBuffers; ++i) {
         AudioQueueBufferRef buffer;

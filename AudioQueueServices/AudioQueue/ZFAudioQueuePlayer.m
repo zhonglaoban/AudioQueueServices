@@ -37,7 +37,7 @@ static const int kNumberBuffers = 3;
         dispatch_async(_queue, ^{
             [self setupAudioQueue];
             [self setVolume:1.0];
-            [self setupAudioQueueBuffers];
+            [self allocateBuffers];
         });
     }
     return self;
@@ -65,7 +65,7 @@ static const int kNumberBuffers = 3;
     OSStatus status = AudioQueueSetParameter(_audioQueue, kAudioQueueParam_Volume, volume);
     printf("set volume: %d \n", (int)status);
 }
-- (void)setupAudioQueueBuffers {
+- (void)allocateBuffers {
     _bufferSize = _sampleRate * _sampleTime * _asbd.mBytesPerPacket;
     for (int i = 0; i < kNumberBuffers; ++i) {
         AudioQueueBufferRef buffer;

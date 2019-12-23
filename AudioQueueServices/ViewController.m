@@ -10,13 +10,12 @@
 #import "ZFAudioQueueRecorder.h"
 #import "ZFAudioQueuePlayer.h"
 #import "ZFAudioSession.h"
-#import "ZFAudioFileManager.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController ()<ZFAudioQueueRecorderDelegate>
 
 @property (strong, nonatomic) ZFAudioQueueRecorder *audioRecorder;
 @property (strong, nonatomic) ZFAudioQueuePlayer *audioPlayer;
-@property (strong, nonatomic) ZFAudioFileManager *audioWriter;
 
 @end
 
@@ -29,7 +28,6 @@
     }else {
         [_audioRecorder stopRecord];
         [_audioPlayer stopPlay];
-        [_audioWriter closeFile];
     }
 }
 - (void)viewDidLoad {
@@ -52,19 +50,9 @@
     absd.mChannelsPerFrame = 1;
     absd.mBitsPerChannel = 16;
     
-    NSString *directory = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject];
-    NSString *filePath = [NSString stringWithFormat:@"%@/test.aif", directory];
-    NSLog(@"%@", filePath);
-    _audioWriter = [[ZFAudioFileManager alloc] initWithAsbd:absd];
-    [_audioWriter openFileWithFilePath:filePath];
-}
-- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
-//    [_audioRecorder stopRecord];
-//    [_audioPlayer stopPlay];
 }
 
 - (void)audioRecorder:(ZFAudioQueueRecorder *)audioRecorder didRecoredAudioData:(void *)data length:(UInt32)length {
     [_audioPlayer putAudioData:data length:length];
-//    [_audioWriter writeData:data length:length];
 }
 @end
