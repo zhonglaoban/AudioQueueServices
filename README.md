@@ -1,6 +1,8 @@
 # Audio Queue Services介绍
 这个文档会分为以下3个部分介绍Audio Queue Services:
-
+1. [Audio Queue Services的结构和处理逻辑](#audio-queue-services%e7%9a%84%e7%bb%93%e6%9e%84%e5%92%8c%e5%a4%84%e7%90%86%e9%80%bb%e8%be%91)
+2. [使用Audio Queue Services录制音频](#%e4%bd%bf%e7%94%a8audio-queue-services%e5%bd%95%e5%88%b6%e9%9f%b3%e9%a2%91)
+3. [使用Audio Queue Services播放音频](#%e4%bd%bf%e7%94%a8audio-queue-services%e6%92%ad%e6%94%be%e9%9f%b3%e9%a2%91)
 
 ## Audio Queue Services的结构和处理逻辑
 - audio queue，它是一个在AudioQueue.h中的。用来连接硬件（麦克风和扬声器），管理内存（buffer的enqueue和消费），控制播放和采集。
@@ -10,7 +12,8 @@
 可以将硬件、audio queue、callback看成是一个圆环上的3个点，它们在不停的按照某一个方向在传输数据，buffer就是装数据的容器。
 ## 使用Audio Queue Services录制音频
 ![录制音频流程图](./images/1577092027071.jpg)
-这里简单介绍一下录制的时候audio queue和硬件以及callback交互的步骤
+
+这里简单介绍一下录制的时候audio queue和硬件以及callback交互的步骤：
 1. 硬件采集音频数据，将它填充到空的buffer中
 2. audio queue将填充的数据告诉callback，硬件继续采集音频数据
 3. 在callback中可以将数据存起来或者发送给其他人
@@ -94,7 +97,6 @@
 }
 ```
 我们要开始录制了，录制前我们还是先检查权限。然后将空的buffer放到队列中供audio queue填充数据。
-这里需要注意，启动时buffer可能都使用完了，我们这里再次给audio queue填充buffer。
 
 ### 停止录制
 ```objc
@@ -138,7 +140,8 @@ static void inputCallback(void * inUserData,
 ## 使用Audio Queue Services播放音频
 
 ![录制音频流程图](./images/1577093798526.jpg)
-这里简单介绍一下录制的时候audio queue和硬件以及callback交互的步骤
+
+这里简单介绍一下播放的时候audio queue和硬件以及callback交互的步骤：
 1. 应用主动调用callback，将buffer给audio queue
 2. audio queue开始工作
 3. audio queue将填充的音频数据交给播放器播放
