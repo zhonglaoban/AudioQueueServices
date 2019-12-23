@@ -139,7 +139,7 @@ static void inputCallback(void * inUserData,
 
 ## 使用Audio Queue Services播放音频
 
-![录制音频流程图](./images/1577093798526.jpg)
+![播放音频流程图](./images/1577093798526.jpg)
 
 这里简单介绍一下播放的时候audio queue和硬件以及callback交互的步骤：
 1. 应用主动调用callback，将buffer给audio queue
